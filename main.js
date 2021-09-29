@@ -2,6 +2,7 @@ import './style.css'
 
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OBJLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/ window.innerHeight, 0.1, 1000)
@@ -12,6 +13,16 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio( window.devicePixelRatio )
 renderer.setSize( window.innerWidth, window.innerHeight )
 camera.position.setZ(30)
+
+//Cats
+const  loader = new OBJLoader()
+loader.load(
+  './cat.obj',
+  function ( object ) {
+    console.log('hi')
+    scene.add(object)
+  }
+)
 
 //Torus
 const geometry = new THREE.TorusGeometry( 10, 3, 16, 100)
@@ -60,7 +71,7 @@ const spaceTexture = new THREE.TextureLoader().load('space.jpeg')
 scene.background = spaceTexture
 
 //Orbit Control
-//  const controls = new OrbitControls(camera, renderer.domElement)
+const controls = new OrbitControls(camera, renderer.domElement)
 
 //Camera Control
 function moveCamera() {
