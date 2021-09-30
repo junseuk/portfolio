@@ -4,6 +4,7 @@ import './style.css'
 import { OBJLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js'
 import { Curves } from './node_modules/three/examples/jsm/curves/CurveExtras'
 import { DoubleSide } from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 let container;
 let camera, scene, renderer, controls, path;
@@ -31,7 +32,7 @@ function init() {
     dirLight.position.set( 0, 0, 1 ).normalize();
     scene.add( dirLight );
     //Path
-    const curve = new Curves.GrannyKnot();
+    const curve = new Curves.VivianiCurve();
     const curveGeo = new THREE.TubeBufferGeometry( curve , 100 , 2 , 8, true )
     const curveMaterial = new THREE.MeshBasicMaterial({ wireframe: true, color: 0xffffff, side: DoubleSide })
     path = new THREE.Mesh( curveGeo, curveMaterial )
@@ -45,11 +46,10 @@ function init() {
             function ( object ) {
                 object.rotateX( Math.PI * Math.random()) 
                 object.rotateY( Math.PI * Math.random()) 
-                object.rotateZ( Math.PI * Math.random())
-                object.scale.set(20,20, 10 + Math.random() * 20 )
-                object.position.x = 7000 * ( 0.5 - Math.random() )
-                object.position.y = 7500 * ( 0.5 - Math.random() )
-                object.position.z = 7000 * ( 0.5 - Math.random() )
+                object.rotateZ( Math.PI * Math.random())    
+                object.position.x = 1 * ( 0.5 - Math.random())
+                object.position.y = 1 * ( 0.5 - Math.random())
+                object.position.z = 1 * ( 0.5 - Math.random())    
                 scene.add(object)
             },
         )
@@ -61,12 +61,19 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
 
-    //FlyControl
+    //Helpers
+    const lightHelper = new THREE.PointLightHelper(pointLight)
+    const gridHelper = new THREE.GridHelper(300, 100)
+    const axesHelper = new THREE.AxesHelper(100)
+    scene.add(pointLight, lightHelper, gridHelper, axesHelper)
 
+    //FlyControl
     // controls = new FlyControls( camera, renderer.domElement );
     // controls.movementSpeed = 1000;
     // controls.rollSpeed = Math.PI / 10;
 
+    //OrbitControl
+    controls = new OrbitControls( camera, renderer.domElement )
     window.addEventListener( 'resize', resize, false );
 
 }
@@ -95,7 +102,7 @@ function updateCamera(){
 function animate() {
 
     requestAnimationFrame( animate );
-    updateCamera();
+    //updateCamera();
     render();
 
 }
