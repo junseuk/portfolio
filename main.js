@@ -15,29 +15,27 @@ renderer.setSize( window.innerWidth, window.innerHeight )
 camera.position.setZ(30)
 
 //Cats
-const  loader = new OBJLoader()
+const loader = new OBJLoader()
 loader.load(
   './cat.obj',
   function ( object ) {
-    console.log('hi')
+    cat = object
+    object.position.x += 35
+    object.position.y -= 359
+    object.position.z -= 100
     scene.add(object)
   }
 )
 
-//Torus
-const geometry = new THREE.TorusGeometry( 10, 3, 16, 100)
-const material = new THREE.MeshStandardMaterial({ color: 0xFF6347 })
-const torus = new THREE.Mesh( geometry, material )
-
-scene.add(torus)
 
 //Light & Grid Helpers
 const pointLight = new THREE.PointLight(0xffffff)
 const lightHelper = new THREE.PointLightHelper(pointLight)
 const gridHelper = new THREE.GridHelper(200, 50)
+const axesHelper = new THREE.AxesHelper(5)
 pointLight.position.set(5, 5, 20)
 
-scene.add(pointLight, lightHelper, gridHelper)
+scene.add(pointLight, lightHelper, gridHelper, axesHelper)
 
 //Stars
 function addStar() {
@@ -71,7 +69,7 @@ const spaceTexture = new THREE.TextureLoader().load('space.jpeg')
 scene.background = spaceTexture
 
 //Orbit Control
-const controls = new OrbitControls(camera, renderer.domElement)
+//const controls = new OrbitControls(camera, renderer.domElement)
 
 //Camera Control
 function moveCamera() {
@@ -92,6 +90,7 @@ document.body.onscroll = moveCamera
 function animate() {
   requestAnimationFrame( animate )
   renderer.render( scene, camera )
+  
   torus.rotation.x += 0.01
   torus.rotation.y += 0.005
   torus.rotation.z += 0.01
